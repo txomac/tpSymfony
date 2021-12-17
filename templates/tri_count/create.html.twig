@@ -4,35 +4,33 @@
 
 {% block body %}
     <div class="container mt-5">
+        <a class="btn btn-success" href="{{ path('addUser') }}">Ajouter des participants</a>
         <div class="row">
             <div class="col-4"><h5>Organisateur</h5></div>
             <div class="col-4"><h5>Invités</h5></div>
         </div>
+        {{ form_start(form) }}
         <div class="row">
-            <div class="col-4">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="card-title"></div>
-                        <div class="card-text"></div>
+
+            {% for user in 1..nbrUser %}
+                {% set nom = 'nom'~user %}
+                {% set depenses = 'depenses'~user %}
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-title"></div>
+                            <div class="card-text">
+                                {# {{ form_widget(form.nom, {'full_name': 'nom' . user}) }} #}
+                                {{ form_widget(attribute(form, nom)) }}
+                                {{ form_widget(attribute(form, depenses)) }}
+
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-4">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="card-title"></div>
-                        <div class="card-text"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="card-title"></div>
-                        <div class="card-text"></div>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-success mt-3 btn-block">Valider</button>
         </div>
+        {{ form_end(form) }}
     </div>
 {% endblock %}
