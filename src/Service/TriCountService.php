@@ -47,18 +47,18 @@ class TriCountService extends AbstractController
 
         $moneySpent = null;
         foreach ($users as $user) {
-            $moneySpent += round($user->getDepenses());
+            $moneySpent += round($user->getDepenses(),2);
         }
         $soiree->setTotalSoiree($moneySpent);
-        $averagePerUser = round($moneySpent) / round(count($users));
-        $soiree->setMoyenneUtilisateur(round($averagePerUser));
+        $averagePerUser = round($moneySpent,2) / round(count($users),2);
+        $soiree->setMoyenneUtilisateur(round($averagePerUser),2);
         $soiree->setNbrparticipants(count($users));
         $this->manager->persist($soiree);
         foreach ($users as $user) {
-            $expenses = round($user->getDepenses());
-            $averagePerUser = round($soiree->getMoyenneUtilisateur());
+            $expenses = round($user->getDepenses(),2);
+            $averagePerUser = round($soiree->getMoyenneUtilisateur(),2);
             $debts = $averagePerUser - $expenses;
-            $user->setDettes(round($debts));
+            $user->setDettes(round($debts,2));
             $this->manager->persist($user);
         }
         $this->manager->flush();
@@ -86,7 +86,7 @@ class TriCountService extends AbstractController
             if ($user2debts != 0) {
                 array_push($tri, "" . $user2->getNom() . " doit donner " . $user2debts . " à " . $user1->getNom() . ".");
             }
-            $usersDebt = round($user1debts) + round($user2debts);
+            $usersDebt = round($user1debts,2) + round($user2debts,2);
             $user1->setDettes($usersDebt);
             $user2->setDettes(0);
             if ($usersDebt>=0){
