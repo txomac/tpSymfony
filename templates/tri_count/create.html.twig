@@ -5,6 +5,8 @@
 {% block body %}
     <div class="container mt-5">
         <a class="btn btn-success" href="{{ path('addUser') }}">Ajouter des participants</a>
+        <br>
+        <br>
         <div class="row">
             <div class="col-4"><h5>Organisateur</h5></div>
             <div class="col-4"><h5>Invités</h5></div>
@@ -15,21 +17,40 @@
             {% for user in 1..nbrUser %}
                 {% set nom = 'nom'~user %}
                 {% set depenses = 'depenses'~user %}
-                <div class="col-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="card-title"></div>
-                            <div class="card-text">
-                                {# {{ form_widget(form.nom, {'full_name': 'nom' . user}) }} #}
-                                {{ form_widget(attribute(form, nom)) }}
-                                {{ form_widget(attribute(form, depenses)) }}
+                {% if user==1 %}
+                    <div class="col-4">
+                        <div class="card mb-3">
+                            <div class="card-body bg-warning">
+                                <div class="card-text">
+                                    {# {{ form_widget(form.nom, {'full_name': 'nom' . user}) }} #}
+                                    {{ form_label(attribute(form,nom)) }}
+                                    {{ form_widget(attribute(form, nom)) }}
+                                    {{ form_label(attribute(form,depenses)) }}
+                                    {{ form_widget(attribute(form, depenses)) }}
 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                <div class="col-4">
+                    <div class="card mb-3">
+                        <div class="card-body bg-info">
+                            <div class="card-text">
+                                {{ form_label(attribute(form,nom)) }}
+                                {{ form_widget(attribute(form, nom)) }}
+                                {{ form_label(attribute(form,depenses)) }}
+                                {{ form_widget(attribute(form, depenses)) }}
                             </div>
                         </div>
                     </div>
                 </div>
+                {% endif %}
             {% endfor %}
-            <button type="submit" class="btn btn-success mt-3 btn-block">Valider</button>
+            <div class="container text-center">
+                <button type="submit" class="btn btn-success mt-3 btn-sm" style="font-size: 20px;">Valider</button>
+            </div>
+
         </div>
         {{ form_end(form) }}
     </div>

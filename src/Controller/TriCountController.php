@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Soiree;
 use App\Entity\User;
 use App\Repository\SoireeRepository;
+use App\Repository\UserRepository;
 use App\Service\TriCountService;
 use App\Form\UserType;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,14 +23,16 @@ class TriCountController extends AbstractController
     private RequestStack $requestStack;
     private TriCountService $service;
     private SoireeRepository $soireeRepo;
+    private UserRepository $userRepo;
 
-    public function __construct(EntityManagerInterface $manager, SessionInterface $session, RequestStack $requestStack, TriCountService $service, SoireeRepository $soireeRepo)
+    public function __construct(EntityManagerInterface $manager, SessionInterface $session, RequestStack $requestStack, TriCountService $service, SoireeRepository $soireeRepo, UserRepository $userRepo)
     {
         $this->manager = $manager;
         $this->session = $session;
         $this->requestStack = $requestStack;
         $this->service = $service;
         $this->soireeRepo = $soireeRepo;
+        $this->userRepo = $userRepo;
     }
 
     #[Route('/tricount', name: 'tri_count')]
@@ -76,8 +79,8 @@ class TriCountController extends AbstractController
                 $this->manager->persist($user);
                 $this->manager->flush($user);
             }
-            return $this->redirectToRoute('home',[
-
+            return $this->redirectToRoute('result',[
+                'id'=>$this->requestStack->getSession()->get('soiree'),
                 ]);
         }
         return $this->render('tri_count/create.html.twig',[
@@ -93,6 +96,22 @@ class TriCountController extends AbstractController
         $this->service->addUser($id);
         return $this->redirectToRoute('create', [
             'id'=>$id,
+        ]);
+    }
+
+    #[Route('/tricount/SeeResult/{id}', name: 'result')]
+    public function seeResult(): Response
+    {
+        $id = $this->requestStack->getSession()->get('soiree');
+        $users = $this->userRepo->findBy(['id_soiree'=>$id]);
+        $this->service->update($id);
+        $tri = $this->service->tri($id);
+        $this->service->update($id);
+
+        return $this->render('tri_count/seeResult.html.twig', [
+            'id'=>$id,
+            'users'=>$users,
+            'tri' => $tri,
         ]);
     }
 }

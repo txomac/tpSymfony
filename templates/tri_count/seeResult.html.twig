@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello TriCountController!{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-4"><h5>Organisateur</h5></div>
+            <div class="col-4"><h5>Invités</h5></div>
+        </div>
+        <div class="row">
+            {% for user in users %}
+                {% if user.isOrganisateur==true %}
+                <div class="col-4">
+                    <div class="card mb-3">
+                        <div class="card-body bg-warning">
+                            <div class="card-title"></div>
+                            <div class="card-text">
+                                <p style="font-size: 18px">Nom : {{ user.nom }}</p>
+                                <p style="font-size: 18px">Dépenses : {{ user.depenses }}</p>
+                                <p style="font-size: 18px">Dettes : {{ user.dettes }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-4">
+                    <div class="card mb-3">
+                        <div class="card-body bg-info">
+                            <div class="card-title"></div>
+                            <div class="card-text">
+                                <p style="font-size: 18px">Nom : {{ user.nom }}</p>
+                                <p style="font-size: 18px">Dépenses : {{ user.depenses }}</p>
+                                <p style="font-size: 18px">Dettes : {{ user.dettes }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            {% endfor %}
+            <h5>Tricount :</h5>
+            <p>
+                {% for line in tri %}
+                    {{ line }}<br>
+                {% endfor %}
+            </p>
+        </div>
+    </div>
+{% endblock %}
+
