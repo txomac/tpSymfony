@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomeController!{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <br>
+            <h1>Bienvenue sur DebtFree</h1>
+            <p>DebtFree est un calculateur qui vous permettera de plus facilement gérer votre budget pour la soiree
+                et gérer les remboursements entre potes !</p>
+            <p>Cliquez sur le bouton ci-dessous pour commencer !</p>
+            <a href="{{ path('tri_count') }}" class="btn btn-primary btn-sm">Faites vos remboursements !</a>
+</div>
+{% endblock %}
